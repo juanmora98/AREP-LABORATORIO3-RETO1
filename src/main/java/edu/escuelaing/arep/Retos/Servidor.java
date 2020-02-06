@@ -15,6 +15,7 @@ public class Servidor {
     private PrintWriter out;
     private BufferedReader in;
     String inputLine, outputLine;
+    private BufferedOutputStream outputData;
 
     
     public static void main(String[] args) throws IOException {
@@ -32,6 +33,7 @@ public class Servidor {
         socketCliente = null;
         out = null;
         in = null;
+        outputData = null;
     }
 
     public int getPuerto(){
@@ -43,41 +45,45 @@ public class Servidor {
 
     public Servidor() throws IOException{
         Iniciador();
-        try {
-            socketCliente = serverSocket.accept();
-        } catch (IOException e) {
-            System.err.println("Fallo al aceptar el puerto del cliente.");
-            System.exit(1);
+        while(true){
+            try {
+                socketCliente = serverSocket.accept();
+            } catch (IOException e) {
+                System.err.println("Fallo al aceptar el puerto del cliente.");
+                System.exit(1);
+            }
+            out = new PrintWriter(socketCliente.getOutputStream());
+            in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
+            outputData = new BufferedOutputStream(socketCliente.getOutputStream());
+            while ((inputLine = in.readLine()) != null) {
+                System.out.println("Recibi: " + inputLine);
+                if (!in.ready())
+                    break;
+            }
+    
+            outputLine = 
+              "<!DOCTYPE html>" + 
+              "<html>" + 
+              "<head>" + 
+              "<meta charset=\"UTF-8\">" + 
+              "<title>Title of the document</title>\n" + 
+              "</head>" + 
+              "<body>" + 
+              "<h1>Mi propio mensaje</h1>" + 
+              "</body>" + 
+              "</html>" + inputLine; 
+            out.println("HTTP/1.1 200 OK");
+            out.println("Content-type: " + "text/html");
+            out.println("\r\n");
+            out.println(outputLine);
+            out.flush();
+            out.close();
+            in.close();
+            socketCliente.close();
+            serverSocket.close();
         }
-        out = new PrintWriter(socketCliente.getOutputStream());
-        in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-        while ((inputLine = in.readLine()) != null) {
-            System.out.println("Recibi: " + inputLine);
-            if (!in.ready())
-                break;
         }
-
-        outputLine = 
-          "<!DOCTYPE html>" + 
-          "<html>" + 
-          "<head>" + 
-          "<meta charset=\"UTF-8\">" + 
-          "<title>Title of the document</title>\n" + 
-          "</head>" + 
-          "<body>" + 
-          "<h1>Mi propio mensaje</h1>" + 
-          "</body>" + 
-          "</html>" + inputLine; 
-        out.println("HTTP/1.1 200 OK");
-        out.println("Content-type: " + "text/html");
-        out.println("\r\n");
-        out.println(outputLine);
-        out.flush();
-        out.close();
-        in.close();
-        socketCliente.close();
-        serverSocket.close();
-    }
+        
 
 
 }
