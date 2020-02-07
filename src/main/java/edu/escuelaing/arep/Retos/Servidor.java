@@ -1,9 +1,16 @@
 package edu.escuelaing.arep.Retos;
 
-
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
-import java.lang.Math;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Scanner;
+
+import javax.imageio.ImageIO;
 
 
 public class Servidor {
@@ -12,14 +19,49 @@ public class Servidor {
 
     private ServerSocket serverSocket;
     private Socket socketCliente;
-    private PrintWriter out;
+    private OutputStream out;
     private BufferedReader in;
     String inputLine, outputLine;
-    private BufferedOutputStream outputData;
-
+    private static ArrayList<String> listaFormatos = new ArrayList<>(Arrays.asList("jpg","png","img"));
     
     public static void main(String[] args) throws IOException {
         new Servidor();
+    }
+
+    public Servidor() throws IOException{
+        Iniciador();
+        while(true){
+            try {
+                socketCliente = serverSocket.accept();
+            } catch (IOException e) {
+                System.err.println("Fallo al aceptar el puerto del cliente.");
+                System.exit(1);
+            }
+            out = socketCliente.getOutputStream();
+            in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
+            while ((inputLine = in.readLine()) != null) {
+                System.out.println("Recibi: " + inputLine);
+                if (!in.ready()) break;
+                outputLine = MetodosDeLlamado();
+            }
+            if(outputLine != null) {
+                String formato = null;
+                if (outputLine.length() > 3){
+                    formato = outputLine.substring(outputLine.length() - 3);
+                }
+                if(listaFormatos.contains(formato)){
+                    try {
+                        MostrarImagen(formato);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    MostrarHtml(out);
+                }
+            }
+            socketCliente.close();
+        }
     }
 
     public void Iniciador(){
@@ -33,7 +75,6 @@ public class Servidor {
         socketCliente = null;
         out = null;
         in = null;
-        outputData = null;
     }
 
     public int getPuerto(){
@@ -43,47 +84,65 @@ public class Servidor {
         return 4567;
     }
 
-    public Servidor() throws IOException{
-        Iniciador();
-        while(true){
-            try {
-                socketCliente = serverSocket.accept();
-            } catch (IOException e) {
-                System.err.println("Fallo al aceptar el puerto del cliente.");
-                System.exit(1);
-            }
-            out = new PrintWriter(socketCliente.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-            outputData = new BufferedOutputStream(socketCliente.getOutputStream());
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println("Recibi: " + inputLine);
-                if (!in.ready())
-                    break;
-            }
     
-            outputLine = 
-              "<!DOCTYPE html>" + 
-              "<html>" + 
-              "<head>" + 
-              "<meta charset=\"UTF-8\">" + 
-              "<title>Title of the document</title>\n" + 
-              "</head>" + 
-              "<body>" + 
-              "<h1>Mi propio mensaje</h1>" + 
-              "</body>" + 
-              "</html>" + inputLine; 
-            out.println("HTTP/1.1 200 OK");
-            out.println("Content-type: " + "text/html");
-            out.println("\r\n");
-            out.println(outputLine);
-            out.flush();
-            out.close();
-            in.close();
-            socketCliente.close();
-            serverSocket.close();
-        }
-        }
-        
 
+    public String MetodosDeLlamado(){
+        if (inputLine.contains("GET")) {
+            String [] splitedLine = inputLine.split(" ");
+            outputLine = splitedLine[1] ;
+        }
+        return outputLine;
+    }
+
+    public void MostrarHtml(OutputStream out) {
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner( new File("src/main/resources/" + outputLine));
+            String htmlString = scanner.useDelimiter("\\Z").next();
+            scanner.close();
+            byte htmlBytes[] = htmlString.getBytes("UTF-8");
+            PrintStream response = new PrintStream(out);
+            DateFormat df = new SimpleDateFormat("EEE, MMM d, yyyy HH:mm:ss z");
+            response.println("HTTP/1.1 200 OK");
+            response.println("Content-Type: text/html; charset=UTF-8");
+            response.println("Date: " + df.format(new Date()));
+            response.println("Connection: close");
+            response.println();
+            response.println(htmlString);
+
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            try {
+                scanner = new Scanner( new File("src/main/resources/notfound.html"));
+                String htmlString = scanner.useDelimiter("\\Z").next();
+                scanner.close();
+                byte htmlBytes[] = htmlString.getBytes("UTF-8");
+                PrintStream response = new PrintStream(out);
+                DateFormat df = new SimpleDateFormat("EEE, MMM d, yyyy HH:mm:ss z");
+                response.println("HTTP/1.1 200 OK");
+                response.println("Content-Type: text/html; charset=UTF-8");
+                response.println("Date: " + df.format(new Date()));
+                response.println("Connection: close");
+                response.println();
+                response.println(htmlString);
+            } catch (FileNotFoundException | UnsupportedEncodingException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }
+        
+    public void MostrarImagen(String formato) throws IOException {
+        try{
+            PrintWriter response = new PrintWriter(out, true);
+            response.println("HTTP/1.1 200 OK");
+            response.println("Content-Type: image/png\r\n");
+            System.out.println(outputLine);
+            BufferedImage image= ImageIO.read(new File("src/main/resources/images/" + outputLine));
+            ImageIO.write(image, formato, out);
+        } catch (IOException e) {
+                BufferedImage image= ImageIO.read(new File("src/main/resources/images/error.png"));
+                ImageIO.write(image, formato, out);
+            }
+        }
 
 }
