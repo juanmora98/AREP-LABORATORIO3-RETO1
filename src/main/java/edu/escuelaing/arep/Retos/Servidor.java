@@ -101,14 +101,14 @@ public class Servidor {
             String htmlString = scanner.useDelimiter("\\Z").next();
             scanner.close();
             byte htmlBytes[] = htmlString.getBytes("UTF-8");
-            PrintStream response = new PrintStream(out);
+            PrintStream ps = new PrintStream(out);
             DateFormat df = new SimpleDateFormat("EEE, MMM d, yyyy HH:mm:ss z");
-            response.println("HTTP/1.1 200 OK");
-            response.println("Content-Type: text/html; charset=UTF-8");
-            response.println("Date: " + df.format(new Date()));
-            response.println("Connection: close");
-            response.println();
-            response.println(htmlString);
+            ps.println("HTTP/1.1 200 OK");
+            ps.println("Content-Type: text/html; charset=UTF-8");
+            ps.println("Date: " + df.format(new Date()));
+            ps.println("Connection: close");
+            ps.println();
+            ps.println(htmlString);
 
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             try {
@@ -116,14 +116,14 @@ public class Servidor {
                 String htmlString = scanner.useDelimiter("\\Z").next();
                 scanner.close();
                 byte htmlBytes[] = htmlString.getBytes("UTF-8");
-                PrintStream response = new PrintStream(out);
+                PrintStream ps = new PrintStream(out);
                 DateFormat df = new SimpleDateFormat("EEE, MMM d, yyyy HH:mm:ss z");
-                response.println("HTTP/1.1 200 OK");
-                response.println("Content-Type: text/html; charset=UTF-8");
-                response.println("Date: " + df.format(new Date()));
-                response.println("Connection: close");
-                response.println();
-                response.println(htmlString);
+                ps.println("HTTP/1.1 200 OK");
+                ps.println("Content-Type: text/html; charset=UTF-8");
+                ps.println("Date: " + df.format(new Date()));
+                ps.println("Connection: close");
+                ps.println();
+                ps.println(htmlString);
             } catch (FileNotFoundException | UnsupportedEncodingException ex) {
                 ex.printStackTrace();
             }
@@ -133,9 +133,9 @@ public class Servidor {
         
     public void MostrarImagen(String formato) throws IOException {
         try{
-            PrintWriter response = new PrintWriter(out, true);
-            response.println("HTTP/1.1 200 OK");
-            response.println("Content-Type: image/png\r\n");
+            PrintWriter pw = new PrintWriter(out, true);
+            pw.println("HTTP/1.1 200 OK");
+            pw.println("Content-Type: image/png\r\n");
             System.out.println(outputLine);
             BufferedImage image= ImageIO.read(new File("src/main/resources/images/" + outputLine));
             ImageIO.write(image, formato, out);
