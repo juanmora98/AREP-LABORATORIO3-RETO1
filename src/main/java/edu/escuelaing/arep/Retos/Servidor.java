@@ -65,11 +65,11 @@ public class Servidor {
     }
 
     public void Iniciador(){
-        // int puerto = getPuerto();
+        int puerto = getPuerto();
         try {
-            serverSocket = new ServerSocket(8499);
+            serverSocket = new ServerSocket(puerto);
         } catch (IOException e) {
-            System.err.println("No se esta escuchando nada del puerto: 8499" /**+ puerto*/);
+            System.err.println("No se esta escuchando nada del puerto: " + puerto);
             System.exit(1);
         }
         socketCliente = null;
@@ -77,15 +77,13 @@ public class Servidor {
         in = null;
     }
 
-    /**
-        public int getPuerto(){
+    public int getPuerto(){
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
         }
         return 4567;
     }
 
-    */
     
 
     public String MetodosDeLlamado(){
