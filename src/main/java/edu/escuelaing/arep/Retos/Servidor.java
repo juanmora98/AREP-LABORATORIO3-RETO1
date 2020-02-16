@@ -42,8 +42,9 @@ public class Servidor {
             BufferedReader in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibi: " + inputLine);
-                if (!in.ready()) break;
                 outputLine = MetodosDeLlamado();
+                if (!in.ready()) break;
+                
             }
             if(outputLine != null) {
                 String formato = null;
