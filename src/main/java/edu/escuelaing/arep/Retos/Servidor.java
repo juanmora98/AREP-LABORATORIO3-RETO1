@@ -25,10 +25,16 @@ public class Servidor {
     
 
     public Servidor() throws IOException{
-        ServerSocket serverSocket = null;
-        Iniciador(serverSocket);
-        Socket socketCliente = null;
         while(true){
+            ServerSocket serverSocket = null;
+            try {
+                serverSocket =  new ServerSocket(getPuerto());
+            } catch (IOException e) {
+                System.err.println("No se esta escuchando nada del puerto: " + getPuerto());
+                System.exit(1);
+            }
+            Iniciador();
+            Socket socketCliente = null;
             try {
                 socketCliente = serverSocket.accept();
             } catch (IOException e) {
@@ -59,17 +65,11 @@ public class Servidor {
                 }
             }
             socketCliente.close();
+            serverSocket.close();
         }
     }
 
-    public void Iniciador(ServerSocket ss){
-        int puerto = getPuerto();
-        try {
-            ss = new ServerSocket(puerto);
-        } catch (IOException e) {
-            System.err.println("No se esta escuchando nada del puerto: " + puerto);
-            System.exit(1);
-        }
+    public void Iniciador(){
         out = null;
         in = null;
     }
