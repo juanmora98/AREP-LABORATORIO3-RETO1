@@ -26,21 +26,25 @@ public class Servidor {
 
     String tipoContenido;
 
+
+    /**
+     * Metodo constructor del servidor en el cual se realizan las distintas conexiones necesarias para generar las paginas y las imagenes
+     * @throws IOException
+     */
     public Servidor() throws IOException{
 
         
         while(true){
-            puerto = getPuerto();
-            //System.out.println("Encontre el puerto: "+ puerto);
+            puerto = getPuerto();          
             IniciadorAtributosConexion(puerto);
-            //System.out.println("Hice conexion en el puerto: "+ puerto);
+
             try {
-                //System.out.println("Listo para recibir, puerto: " + socketServidor.getLocalPort());
+                
                 socketCliente = socketServidor.accept();
-                //System.out.println("Nueva Coneccion");
+
             } catch (IOException e) {
-                //System.err.println("Fallo al aceptar el puerto del cliente.");
-                //System.exit(1);
+                System.err.println("Fallo al aceptar el puerto del cliente.");
+                System.exit(1);
             }
 
             RealizadorConexionStream();
@@ -77,7 +81,10 @@ public class Servidor {
     }
 
 
-
+    /**
+     * Metodo encargado de encontrar el puerto por el que se ara la conexion
+     * @return int que es el puerto para realizar la conexion
+     */
     public int getPuerto(){
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
@@ -85,6 +92,10 @@ public class Servidor {
         return 4567;
     }
 
+    /**
+     * Metodo iniciador del socket del servidor y de los distintos atributos necesarios para mostrar las imagenes y las paginas
+     * @param puerto
+     */
     public void IniciadorAtributosConexion(int puerto){
         try {
             socketServidor = new ServerSocket(puerto);    
@@ -98,6 +109,11 @@ public class Servidor {
         outputStream = null;
     }
 
+
+    /**
+     * Metodo en el cual se establecen los valores de distintos atributos que necesitan del socket del cliente
+     * @throws IOException
+     */
     public void RealizadorConexionStream() throws IOException {
         outputStream = socketCliente.getOutputStream();
         printWriter = new PrintWriter(socketCliente.getOutputStream());
@@ -105,6 +121,9 @@ public class Servidor {
         bufferedOutputStream = new BufferedOutputStream(socketCliente.getOutputStream());
     }
 
+    /**
+     * Metodo utilizado para la generacion del path de los recursos y realizar la muestra de la pagina dependiendo de lo solicitado
+     */
     public void CreacionArchivo() {
 
         String path = System.getProperty("user.dir")
@@ -119,25 +138,18 @@ public class Servidor {
         + System.getProperty("file.separator")
         + archivo.substring(0, archivo.length()/** - 1*/ );
 
-        //System.out.println("Request: " + archivo);
-        //System.out.println("Path: " + path);
-
         tipoContenido ="";
         ConfirmarTipoContenido();
         
         try {
-            //System.out.println("Entre al try");
-            //System.out.println("Path: " + path);
+
             File pagina = new File(path);
-            //Aqui esta el problema
             BufferedReader bufferedReader2 = new BufferedReader(new FileReader(pagina));
-            //System.out.println("tipocontenido: " + tipoContenido);
+
             if(tipoContenido.contains("image/")){
-                //System.out.println("Estoy intentando mostrar una imagen");
                 MostrarImagen(pagina,tipoContenido.substring(tipoContenido.indexOf("/")+1));
             } 
             else{
-                //System.out.println("Estoy intentando mostrar una pagina con bf2");
                 MostrarPagina(bufferedReader2);
             }
 
@@ -146,6 +158,11 @@ public class Servidor {
         }
     }
 
+    /**
+     * Metodo utilizado para mostrar una pagina web con el contenido solicitado que no es tipo imagen
+     * @param br buffered creado anteriormente
+     * @throws IOException
+     */
     public void MostrarPagina(BufferedReader br) throws IOException {
         String outString = 
         "HTTP/1.1 200 Ok\r\n" + 
@@ -162,6 +179,9 @@ public class Servidor {
         
     }
 
+    /**
+     * Metodo en el cual se genera una pagina en la cual se muestraque el tipo de archivo buscado no se encuentra en los recursos
+     */
     public void MostrarPaginaError(){
         String outputLine =
         "HTTP/1.1 404 Not Found\r\n"
@@ -182,33 +202,35 @@ public class Servidor {
         printWriter.println(outputLine);
     }
 
+    /**
+     * Metodo en el cual a partir del formato con el que se busco un archivo se clasifica en que tipo esta
+     */
     public void ConfirmarTipoContenido(){
-        //System.out.println("archivo: " + archivo);
 
         if(archivo.endsWith(".html ") || archivo.endsWith(".htm ") || archivo.endsWith(".html") || archivo.endsWith(".htm")){
             tipoContenido = "text/html";
         }
-        else if(archivo.endsWith(".css ")){
+        else if(archivo.endsWith(".css ") || archivo.endsWith(".css")){
             tipoContenido = "text/css";
         }
 
-        else if(archivo.endsWith(".ico ")){
+        else if(archivo.endsWith(".ico ") || archivo.endsWith(".ico")){
             tipoContenido = "image/x-icon";
         }
 
-        else if(archivo.endsWith(".png ")){
+        else if(archivo.endsWith(".png ") || archivo.endsWith(".png")){
             tipoContenido = "image/png";
         }
 
-        else if(archivo.endsWith(".jpeg ")){
+        else if(archivo.endsWith(".jpeg ") || archivo.endsWith(".jpeg")){
             tipoContenido = "image/jpeg";
         }
 
-        else if(archivo.endsWith(".js ")){
+        else if(archivo.endsWith(".js ") || archivo.endsWith(".js")){
             tipoContenido = "application/javascript";
         }
 
-        else if(archivo.endsWith(".json ")){
+        else if(archivo.endsWith(".json ") || archivo.endsWith(".json")){
             tipoContenido = "application/json";
         }
 
@@ -216,19 +238,29 @@ public class Servidor {
             tipoContenido = "text/plain";
         }
 
-        //System.out.println("tipocontenido: " + tipoContenido);
     }
 
+    /**
+     * Metodo con el cual se cierran todas las conexiones realizadas anteriormente
+     * @throws IOException
+     */
     public void CerrarTodo() throws IOException {
+
         printWriter.close();
         outputStream.close();
         bufferedOutputStream.close();
         bufferedReader.close();
         socketCliente.close();
         socketServidor.close();
-        //System.out.println("Si cerre");
+
     }
         
+    /**
+     * metodo con el cual se genera la pagina para poder mostrar imagenes
+     * @param pagina
+     * @param formato
+     * @throws IOException
+     */
     public void MostrarImagen(File pagina, String formato) throws IOException {
         
         FileInputStream fis = new FileInputStream(pagina);
@@ -252,6 +284,11 @@ public class Servidor {
     }
 
 
+    /**
+     * metodo para arrancar el servidor
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException{
         new Servidor();
     }
