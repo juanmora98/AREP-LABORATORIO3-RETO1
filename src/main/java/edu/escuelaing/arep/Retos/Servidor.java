@@ -71,7 +71,7 @@ public class Servidor {
     public int getPuerto(){
         if (System.getenv("PORT") != null) {
             return Integer.parseInt(System.getenv("PORT"));
-        }
+         }
         return 4567;
     }
 
@@ -88,7 +88,7 @@ public class Servidor {
     public void MostrarHtml(OutputStream out) {
         Scanner scanner = null;
         try {
-            scanner = new Scanner( new File("src/main/resources/" + outputLine));
+            scanner = new Scanner( new File("src/main/java/resources/" + outputLine));
             String htmlString = scanner.useDelimiter("\\Z").next();
             scanner.close();
             byte htmlBytes[] = htmlString.getBytes("UTF-8");
