@@ -24,9 +24,7 @@ public class Servidor {
     String inputLine, outputLine;
     private static ArrayList<String> listaFormatos = new ArrayList<>(Arrays.asList("jpg","png","img"));
     
-    public static void main(String[] args) throws IOException {
-        new Servidor();
-    }
+    
 
     public Servidor() throws IOException{
         Iniciador();
