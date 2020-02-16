@@ -9,7 +9,7 @@ import java.util.Date;
 public class Servidor {
 
     //Atributos
-    
+
     int puerto;
 
 //region Sockets
@@ -31,16 +31,16 @@ public class Servidor {
         
         while(true){
             puerto = getPuerto();
-            System.out.println("Encontre el puerto: "+ puerto);
+            //System.out.println("Encontre el puerto: "+ puerto);
             IniciadorAtributosConexion(puerto);
-            System.out.println("Hice conexion en el puerto: "+ puerto);
+            //System.out.println("Hice conexion en el puerto: "+ puerto);
             try {
-                System.out.println("Listo para recibir, puerto: " + socketServidor.getLocalPort());
+                //System.out.println("Listo para recibir, puerto: " + socketServidor.getLocalPort());
                 socketCliente = socketServidor.accept();
-                System.out.println("Nueva Coneccion");
+                //System.out.println("Nueva Coneccion");
             } catch (IOException e) {
-                System.err.println("Fallo al aceptar el puerto del cliente.");
-                System.exit(1);
+                //System.err.println("Fallo al aceptar el puerto del cliente.");
+                //System.exit(1);
             }
 
             RealizadorConexionStream();
@@ -119,25 +119,25 @@ public class Servidor {
         + System.getProperty("file.separator")
         + archivo.substring(0, archivo.length()/** - 1*/ );
 
-        System.out.println("Request: " + archivo);
-        System.out.println("Path: " + path);
+        //System.out.println("Request: " + archivo);
+        //System.out.println("Path: " + path);
 
         tipoContenido ="";
         ConfirmarTipoContenido();
         
         try {
-            System.out.println("Entre al try");
-            System.out.println("Path: " + path);
+            //System.out.println("Entre al try");
+            //System.out.println("Path: " + path);
             File pagina = new File(path);
             //Aqui esta el problema
             BufferedReader bufferedReader2 = new BufferedReader(new FileReader(pagina));
-            System.out.println("tipocontenido: " + tipoContenido);
+            //System.out.println("tipocontenido: " + tipoContenido);
             if(tipoContenido.contains("image/")){
-                System.out.println("Estoy intentando mostrar una imagen");
+                //System.out.println("Estoy intentando mostrar una imagen");
                 MostrarImagen(pagina,tipoContenido.substring(tipoContenido.indexOf("/")+1));
             } 
             else{
-                System.out.println("Estoy intentando mostrar una pagina con bf2");
+                //System.out.println("Estoy intentando mostrar una pagina con bf2");
                 MostrarPagina(bufferedReader2);
             }
 
@@ -183,7 +183,7 @@ public class Servidor {
     }
 
     public void ConfirmarTipoContenido(){
-        System.out.println("archivo: " + archivo);
+        //System.out.println("archivo: " + archivo);
 
         if(archivo.endsWith(".html ") || archivo.endsWith(".htm ") || archivo.endsWith(".html") || archivo.endsWith(".htm")){
             tipoContenido = "text/html";
@@ -216,7 +216,7 @@ public class Servidor {
             tipoContenido = "text/plain";
         }
 
-        System.out.println("tipocontenido: " + tipoContenido);
+        //System.out.println("tipocontenido: " + tipoContenido);
     }
 
     public void CerrarTodo() throws IOException {
@@ -226,7 +226,7 @@ public class Servidor {
         bufferedReader.close();
         socketCliente.close();
         socketServidor.close();
-        System.out.println("Si cerre");
+        //System.out.println("Si cerre");
     }
         
     public void MostrarImagen(File pagina, String formato) throws IOException {
@@ -249,6 +249,11 @@ public class Servidor {
          dataOutputStream2.close();
 
         
+    }
+
+
+    public static void main(String[] args) throws IOException{
+        new Servidor();
     }
 
 }
