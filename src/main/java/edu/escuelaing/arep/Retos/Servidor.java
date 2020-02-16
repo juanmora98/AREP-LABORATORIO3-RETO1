@@ -17,8 +17,6 @@ public class Servidor {
 
     //Atributos
 
-    private ServerSocket serverSocket;
-    private Socket socketCliente;
     private OutputStream out;
     private BufferedReader in;
     String inputLine, outputLine;
@@ -27,7 +25,9 @@ public class Servidor {
     
 
     public Servidor() throws IOException{
-        Iniciador();
+        ServerSocket serverSocket = null;
+        Iniciador(serverSocket);
+        Socket socketCliente = null;
         while(true){
             try {
                 socketCliente = serverSocket.accept();
@@ -62,15 +62,14 @@ public class Servidor {
         }
     }
 
-    public void Iniciador(){
+    public void Iniciador(ServerSocket ss){
         int puerto = getPuerto();
         try {
-            serverSocket = new ServerSocket(puerto);
+            ss = new ServerSocket(puerto);
         } catch (IOException e) {
             System.err.println("No se esta escuchando nada del puerto: " + puerto);
             System.exit(1);
         }
-        socketCliente = null;
         out = null;
         in = null;
     }
