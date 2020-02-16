@@ -147,7 +147,7 @@ public class Servidor {
             BufferedReader bufferedReader2 = new BufferedReader(new FileReader(pagina));
 
             if(tipoContenido.contains("image/")){
-                MostrarImagen(pagina,tipoContenido.substring(tipoContenido.indexOf("/")+1));
+                MostrarImagen(pagina,tipoContenido.substring(tipoContenido.indexOf("/") + 1));
             } 
             else{
                 MostrarPagina(bufferedReader2);
@@ -268,7 +268,6 @@ public class Servidor {
          fis.read(data);
          fis.close();
 
-         // Cabeceras con la info de la imágen
          DataOutputStream dataOutputStream2 = new DataOutputStream(outputStream);
          String outString = "HTTP/1.1 200 Ok\r\n" + 
          "Content-type: image/"+ formato +"\r\n" +
