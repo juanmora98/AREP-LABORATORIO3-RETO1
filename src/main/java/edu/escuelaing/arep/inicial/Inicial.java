@@ -1,4 +1,4 @@
-package edu.escuelaing.arep.Main;
+package edu.escuelaing.arep.inicial;
 
 import java.io.IOException;
 

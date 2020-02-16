@@ -109,7 +109,7 @@ public class Servidor {
 
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             try {
-                scanner = new Scanner( new File("src/main/resources/notfound.html"));
+                scanner = new Scanner( new File("src/main/java/resources/notfound.html"));
                 String htmlString = scanner.useDelimiter("\\Z").next();
                 scanner.close();
                 byte htmlBytes[] = htmlString.getBytes("UTF-8");
@@ -134,10 +134,10 @@ public class Servidor {
             pw.println("HTTP/1.1 200 OK");
             pw.println("Content-Type: image/png\r\n");
             System.out.println(outputLine);
-            BufferedImage image= ImageIO.read(new File("src/main/resources/images/" + outputLine));
+            BufferedImage image= ImageIO.read(new File("src/main/java/resources/images/" + outputLine));
             ImageIO.write(image, formato, out);
         } catch (IOException e) {
-                BufferedImage image= ImageIO.read(new File("src/main/resources/images/error.png"));
+                BufferedImage image= ImageIO.read(new File("src/main/java/resources/images/error.png"));
                 ImageIO.write(image, formato, out);
             }
         }
