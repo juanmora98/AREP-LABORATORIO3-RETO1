@@ -23,7 +23,7 @@ Laboratorio realizado con la intención de que los estudiantes utilicen los los 
 El pdf añadido de nombre [Laboratorio3](https://github.com/juanmora98/AREP-SparkWebApp/blob/master/LATEX.pdf) se encuentra el diseño del proyecto.
 
 # JavaDoc
-[Documentacion](https://github.com/juanmora98/AREP-SparkWebApp/tree/master/target/apidocs) al darle click, se abrira la carpeta donde se encuentra el archivo index,o ir a la direccion /AREP-SparkWebApp/target/apidocs.
+[Documentacion](https://github.com/juanmora98/AREP-Laboratorio3-Reto1/tree/master/apidocs) al darle click, se abrira la carpeta donde se encuentra los archivos generados por el javadocs.
 
 ## Construido
 * [maven] - manejador de dependencias
