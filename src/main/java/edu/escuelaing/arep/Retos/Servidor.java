@@ -17,8 +17,6 @@ public class Servidor {
 
     //Atributos
 
-    private OutputStream out;
-    private BufferedReader in;
     String inputLine, outputLine;
     private static ArrayList<String> listaFormatos = new ArrayList<>(Arrays.asList("jpg","png","img"));
     
@@ -33,7 +31,6 @@ public class Servidor {
                 System.err.println("No se esta escuchando nada del puerto: " + getPuerto());
                 System.exit(1);
             }
-            Iniciador();
             Socket socketCliente = null;
             try {
                 socketCliente = serverSocket.accept();
@@ -41,8 +38,8 @@ public class Servidor {
                 System.err.println("Fallo al aceptar el puerto del cliente.");
                 System.exit(1);
             }
-            out = socketCliente.getOutputStream();
-            in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
+            OutputStream out = socketCliente.getOutputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             while ((inputLine = in.readLine()) != null) {
                 System.out.println("Recibi: " + inputLine);
                 if (!in.ready()) break;
@@ -55,7 +52,7 @@ public class Servidor {
                 }
                 if(listaFormatos.contains(formato)){
                     try {
-                        MostrarImagen(formato);
+                        MostrarImagen(formato,out);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -69,10 +66,7 @@ public class Servidor {
         }
     }
 
-    public void Iniciador(){
-        out = null;
-        in = null;
-    }
+
 
     public int getPuerto(){
         if (System.getenv("PORT") != null) {
@@ -128,7 +122,7 @@ public class Servidor {
         }
     }
         
-    public void MostrarImagen(String formato) throws IOException {
+    public void MostrarImagen(String formato, OutputStream out) throws IOException {
         try{
             PrintWriter pw = new PrintWriter(out, true);
             pw.println("HTTP/1.1 200 OK");
