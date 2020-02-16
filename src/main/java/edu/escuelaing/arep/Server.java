@@ -72,7 +72,7 @@ public class Server {
     private static void serveHtml(String path, OutputStream out) {
         Scanner scanner = null;
         try {
-            scanner = new Scanner( new File("src/main/java/resources/"+path));
+            scanner = new Scanner( new File("src/main/java/resources/images"+path));
             String htmlString = scanner.useDelimiter("\\Z").next();
             scanner.close();
             byte htmlBytes[] = htmlString.getBytes("UTF-8");
@@ -87,7 +87,7 @@ public class Server {
 
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             try {
-                scanner = new Scanner( new File("src/main/java/resources/NOTFOUND.html"));
+                scanner = new Scanner( new File("src/main/java/resources/images/notfound.html"));
                 String htmlString = scanner.useDelimiter("\\Z").next();
                 scanner.close();
                 byte htmlBytes[] = htmlString.getBytes("UTF-8");
@@ -111,10 +111,10 @@ public class Server {
         PrintWriter response = new PrintWriter(outputStream, true);
         response.println("HTTP/1.1 200 OK");
         response.println("Content-Type: image/png\r\n");
-        BufferedImage image= ImageIO.read(new File("src/main/java/resources/"+path));
+        BufferedImage image= ImageIO.read(new File("src/main/java/resources/images"+path));
         ImageIO.write(image, ext, outputStream);
         } catch (IOException e) {
-            BufferedImage image= ImageIO.read(new File("src/main/java/resources/imagenes/error.png"));
+            BufferedImage image= ImageIO.read(new File("src/main/java/resources/images/error.png"));
             ImageIO.write(image, ext, outputStream);
         }
     }
