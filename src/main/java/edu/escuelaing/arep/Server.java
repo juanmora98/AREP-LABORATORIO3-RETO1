@@ -87,7 +87,7 @@ public class Server {
 
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             try {
-                scanner = new Scanner( new File("src/main/java/resources/images/notfound.html"));
+                scanner = new Scanner( new File("src/main/java/resources/images/error.html"));
                 String htmlString = scanner.useDelimiter("\\Z").next();
                 scanner.close();
                 byte htmlBytes[] = htmlString.getBytes("UTF-8");
