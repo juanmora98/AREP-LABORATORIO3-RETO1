@@ -21,7 +21,7 @@ public class Server {
     public static void main(String[] args) {
 
         try {
-            serverSocket = new ServerSocket(8080);
+            serverSocket = new ServerSocket(getPort());
             while(true) {
                 System.out.println("Ready to receive on port 8080");
                 clientSocket = serverSocket.accept();
@@ -119,5 +119,11 @@ public class Server {
         }
     }
 
+    private static int getPort() {
+        if (System.getenv("PORT") != null) {
+           return Integer.parseInt(System.getenv("PORT"));
+        }
+        return 5000; // returns default port if heroku-port isn't set (i.e. on localhost)
+     }
 
 }
