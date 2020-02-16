@@ -1,5 +1,11 @@
 # AREP-Laboratorio3-Reto1
  
+ [![Heroku](https://heroku-badge.herokuapp.com/?app=mighty-ocean-00668)](https://secret-dusk-21220.herokuapp.com)
+[![CircleCI](https://circleci.com/gh/juanmora98/AREP-Laboratorio3-Reto1.svg?style=svg)](https://circleci.com/gh/juanmora98/AREP-Laboratorio3-Reto1)
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven.plugins/maven-compiler-plugin/3.8.0)](https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin/3.8.0)
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven.plugins/maven-dependency-plugin/3.0.1)](https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin/3.0.1)
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven.plugins/maven-javadoc-plugin)](https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin)
+ 
 Laboratorio 03 de la materia Arquitecturas empresariales dictada en la Escuela Colombiana de Ingenieria Julio Garavito en el periodo 2020-1.
 
 # Link Heroku 
