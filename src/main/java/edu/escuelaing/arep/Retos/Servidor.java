@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Date;
 
+import edu.escuelaing.arep.ServidorDb;
+
 
 
 public class Servidor {
@@ -67,6 +69,10 @@ public class Servidor {
             if(archivo.equals(" ") || archivo.equals("/")) {
                 archivo = "index.html";
 
+            }
+
+            if (archivo.equals("editores ")){
+                MostrarPaginaDB();
             }
 
             if(!archivo.equals("/")){
@@ -283,6 +289,29 @@ public class Servidor {
         
     }
 
+    public void MostrarPaginaDB() {
+        String res = ServidorDb.InicializarDataBase();
+        String outString = 
+           "HTTP/1.1 200 Ok\r\n" + 
+           "Content-type: " + "text/html" + "\r\n" + 
+           "Server: Java HTTP Server\r\n" + 
+           "Date: " + new Date() + "\r\n" + 
+           "\r\n" +
+           "<!DOCTYPE html>" + 
+              "<html>" + 
+              "<head>" + 
+              "<meta charset=\"UTF-8\">" + 
+              "<title>editores</title>\n" + 
+              "</head>" + 
+              "<body>" + 
+              "<center>" +
+              "<h1>Nombre editores</h1></br>" +
+              res + 
+              "</center>" + 
+              "</body>" + 
+              "</html>";
+           printWriter.println(outString);
+     }
 
     /**
      * metodo para arrancar el servidor

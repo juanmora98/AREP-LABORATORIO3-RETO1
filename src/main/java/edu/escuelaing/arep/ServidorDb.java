@@ -7,8 +7,12 @@ import java.sql.Statement;
 
 public class ServidorDb 
 {
-    public static void main( String[] args )
+
+    
+
+    public static String InicializarDataBase()
     {
+        String res = "";
         try {  
             Class.forName("org.postgresql.Driver");
             String host = "ec2-184-72-235-159.compute-1.amazonaws.com";
@@ -19,11 +23,16 @@ public class ServidorDb
             Connection con = DriverManager.getConnection( "jdbc:postgresql://"+ host + ":" + port + "/" + database, user, passwd);
             Statement stmt=con.createStatement();  
             ResultSet rs=stmt.executeQuery("select * from editores");
-            while(rs.next())  
-                System.out.println(rs.getInt(1)+"  "+rs.getString(2));  
+            int i = 0;
+            while(rs.next()){
+                res += "Line" + i + ": " + rs.getInt(1) + "  " + rs.getString(2) + "</br>";
+                i++;
+            }
+                
             con.close();  
         } catch(Exception e) { 
             System.out.println(e);
         }
+        return res;
     }
 }
