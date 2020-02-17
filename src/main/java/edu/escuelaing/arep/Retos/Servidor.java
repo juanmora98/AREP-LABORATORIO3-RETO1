@@ -137,7 +137,7 @@ public class Servidor {
         + "resources"
         + System.getProperty("file.separator")
         + archivo.substring(0, archivo.length()/** - 1*/ );
-        
+        System.out.println(path);
 
         tipoContenido ="";
         ConfirmarTipoContenido();
@@ -148,7 +148,7 @@ public class Servidor {
             BufferedReader bufferedReader2 = new BufferedReader(new FileReader(pagina));
 
             if(tipoContenido.contains("image/")){
-                MostrarImagen(pagina,tipoContenido.substring(tipoContenido.indexOf("/") + 1),path);
+                MostrarImagen(pagina,tipoContenido.substring(tipoContenido.indexOf("/") + 1));
             } 
             else{
                 MostrarPagina(bufferedReader2);
@@ -262,7 +262,7 @@ public class Servidor {
      * @param formato
      * @throws IOException
      */
-    public void MostrarImagen(File pagina, String formato,String path) throws IOException {
+    public void MostrarImagen(File pagina, String formato) throws IOException {
         
         FileInputStream fis = new FileInputStream(pagina);
          byte[] data = new byte[(int) pagina.length()];
@@ -275,7 +275,6 @@ public class Servidor {
          "Server: Java HTTP Server\r\n" +
          "Date: " + new Date() + "\r\n" +
          "Content-Length: " + data.length + "\r\n"
-         + path
          + "\r\n";
          dataOutputStream2.writeBytes(outString);
          dataOutputStream2.write(data);
