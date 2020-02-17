@@ -1,4 +1,4 @@
-# AREP-Laboratorio3-Reto1
+# AREP-Laboratorio3-Reto1-Reto2
  
  [![Heroku](https://heroku-badge.herokuapp.com/?app=mighty-ocean-00668)](https://secret-dusk-21220.herokuapp.com)
 [![CircleCI](https://circleci.com/gh/juanmora98/AREP-Laboratorio3-Reto1-Reto2.svg?style=svg)](https://circleci.com/gh/juanmora98/AREP-Laboratorio3-Reto1-Reto2)
