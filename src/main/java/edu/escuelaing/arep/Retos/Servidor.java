@@ -137,6 +137,7 @@ public class Servidor {
         + "resources"
         + System.getProperty("file.separator")
         + archivo.substring(0, archivo.length()/** - 1*/ );
+        System.out.println(path);
 
         tipoContenido ="";
         ConfirmarTipoContenido();
