@@ -23,7 +23,7 @@ https://secret-dusk-21220.herokuapp.com/editores
    * [java]
   
 # Diseño
-El pdf añadido de nombre [Laboratorio3](https://github.com/juanmora98/AREP-SparkWebApp/blob/master/LATEX.pdf) se encuentra el diseño del proyecto.
+El pdf añadido de nombre [Laboratorio3](https://github.com/juanmora98/AREP-Laboratorio3-Reto1-Reto2/blob/master/LATEX.pdf) se encuentra el diseño del proyecto.
 
 # JavaDoc
 [Documentacion](https://github.com/juanmora98/AREP-Laboratorio3-Reto1/tree/master/apidocs) al darle click, se abrira la carpeta donde se encuentra los archivos generados por el javadocs.
